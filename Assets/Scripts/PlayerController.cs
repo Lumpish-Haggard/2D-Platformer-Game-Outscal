@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public float speed;
     public float jump;
-    private Rigidbody2D rb2d; //for fall after the jump
+    private Rigidbody2D ellenkibody; //for fall after the jump
 
     //public Sprite[] standing; //for crouching
     //public Sprite[] crouching;
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private void Awake() //Starting the script
     {
         Debug.Log("Player Contoller Awake");
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
+        ellenkibody = gameObject.GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
         //vertical movements
         if(vertical > 0)
         {
-            rb2d.AddForce(new Vector2(0f, jump), ForceMode2D.Force);
+            ellenkibody.AddForce(new Vector2(0f, jump), ForceMode2D.Force);
         }
     }
 
