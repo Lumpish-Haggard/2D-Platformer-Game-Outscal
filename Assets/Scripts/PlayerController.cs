@@ -4,113 +4,64 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator animator;
+    public float horizontal;
     public float speed;
     public float jump;
-    private Rigidbody2D ellenkibody; //for fall after the jump
+    public float jumpForce;
 
-    //public Sprite[] standing; //for crouching
-    //public Sprite[] crouching;
-    //private BoxCollider2D collide2D;
-    //private Transform skin;
-    //private SpriteRenderer characterRenderer;
-    //private SpriteRenderer skinRenderer;
+    public bool grounded;
+    public bool facingRight = true;
 
-    //public CharacterController PlayerHeight; //crouch
-    //public float normalHeight, crouchHeight;
+    public LayerMask whatIsGround;
+    public float groundRadius;
+    public Transform groundPoint;
 
+    Rigidbody2D EllenRigidBody;
+    Animator AnimationControl;
 
-    private void Awake() //Starting the script
+    private void Start() 
     {
-        Debug.Log("Player Contoller Awake");
-        ellenkibody = gameObject.GetComponent<Rigidbody2D>();
+        EllenRigidBody = GetComponent<Rigidbody2D>();
+        AnimationControl = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Update() 
     {
-        Debug.Log("Collision: " + collision.gameObject.name); //Printing the collider
+        horizontal = Input.GetAxisRaw("Horizontal");
+        jump = Input.GetAxisRaw("Jump");
     }
 
-    private void Update() //input logic to make player move
+    private void FixedUpdate() 
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Jump");
- 
-        MoveCharacter(horizontal, vertical);
-        PlayMovementAnimation(horizontal, vertical);
+        Flip();
+        grounded = Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround);
+        Move();
+        Jump();
 
-        //if (Input.GetKeyDown(KeyCode.C)) //crouch
-        //{
-        //    PlayerHeight.height = crouchHeight;
-        //}
-        //if (Input.GetKeyUp(KeyCode.C))
-        //{
-        //    PlayerHeight.height = normalHeight;
-        //}
-
+        AnimationControl.SetFloat("Speed", Mathf.Abs(EllenRigidBody.velocity.x));
+        AnimationControl.SetBool("Grounded", grounded);
+        AnimationControl.SetFloat("Jumping", EllenRigidBody.velocity.y);
     }
 
-    private void MoveCharacter(float horizontal, float vertical) //character moving function
+    private void Move()
     {
-        //horizontal movements
-        Vector3 position = transform.position;
-        position.x += horizontal * speed * Time.deltaTime; // [1 / frames per second]
-        transform.position = position;
+        EllenRigidBody.velocity = new Vector2(horizontal * speed, EllenRigidBody.velocity.y);
+    }
 
-        //vertical movements
-        if(vertical > 0)
+    private void Jump()
+    {
+        if(grounded)
+        EllenRigidBody.velocity = new Vector2(EllenRigidBody.velocity.x, jump * jumpForce);
+    }
+
+    private void Flip()
+    {
+        if((horizontal<0 && facingRight == true) || (horizontal>0 && facingRight == false))
         {
-            ellenkibody.AddForce(new Vector2(0f, jump), ForceMode2D.Force);
+            facingRight = !facingRight;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
         }
     }
-
-    private void PlayMovementAnimation(float horizontal, float vertical)
-    {
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
-
-        Vector3 scale = transform.localScale;
-        if (horizontal < 0) //rotating it for the left animation (flip)
-        {
-            scale.x = -1f * Mathf.Abs(scale.x);
-        }
-        else if (horizontal > 0)
-        {
-            scale.x = Mathf.Abs(scale.x);
-        }
-        transform.localScale = scale;
-
-        //jump
-        if (vertical > 0)
-        {
-            animator.SetBool("Jump", true);
-        } else
-        {
-            animator.SetBool("Jump", false);
-        }
-
-        ////crouch
-        //collide2D = GetComponent<BoxCollider2D>();
-        //skin = transform.GetChild(0);
-        //characterRenderer = GetComponent<SpriteRenderer>();
-        //skinRenderer = skin.GetComponent<SpriteRenderer>();
-
-    }
-
-    //public void Crouch(bool pressed)
-    //{
-    //    if(pressed)
-    //    {
-    //        collide2D.size = new Vector2(collide2D.size.x, 4.5f);
-    //        collide2D.offset = new Vector2(collide2D.offset.x, 0.5f);
-    //        characterRenderer.sprite = crouching[0];
-    //        skinRenderer.sprite = crouching[1];
-    //    } else
-    //    {
-    //        collide2D.size = new Vector2(collide2D.size.x, 6f);
-    //        collide2D.offset = new Vector2(collide2D.offset.x, 0);
-    //        characterRenderer.sprite = standing[0];
-    //        skinRenderer.sprite = standing[1];
-    //    }
-    //}
-
 }
