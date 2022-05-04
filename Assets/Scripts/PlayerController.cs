@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
     public float groundRadius;
     public Transform groundPoint;
 
-    Rigidbody2D EllenRigidBody;
-    Animator AnimationControl;
+    private Rigidbody2D EllenRigidBody;
+    private Animator AnimationControl;
 
     private void Start() 
     {
