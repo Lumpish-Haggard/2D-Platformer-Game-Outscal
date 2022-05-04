@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour
 
     private bool hurt = false;
 
-    Stats playerStats = new Stats();
+    public Stats playerStats = new Stats();
 
     public int normalDamage;
 
@@ -27,6 +27,32 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other) 
+    {
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            if (playerStats.Health < playerStats.maxHP)
+            {
+                playerStats.Health += 1;
+                other.gameObject.SetActive(false);
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    void Awake()
+    {
+        
+        if (damageScreen == null)
+        {
+            damageScreen = GameObject.FindGameObjectWithTag("DamageScreen").GetComponent<Image>(); //adding screen hurt effect to prefab
+        }
+        
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -36,6 +62,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
         if (hurt == true)
         {
             damageScreen.color = imageColor;
@@ -52,5 +79,11 @@ public class PlayerScript : MonoBehaviour
     {
         playerStats.Health -= damage;
         hurt = true;
+
+        if (playerStats.Health <=0)
+        {
+            Destroy(gameObject);
+            GameManager.GM.StartCoroutine(GameManager.GM.Respawn());
+        }
     }
 }

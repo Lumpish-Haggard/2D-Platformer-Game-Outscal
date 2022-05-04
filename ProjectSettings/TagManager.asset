@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Chomper
+  - DamageScreen
+  - PickUp
   layers:
   - Default
   - TransparentFX
