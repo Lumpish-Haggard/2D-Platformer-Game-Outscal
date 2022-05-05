@@ -7,6 +7,7 @@ TagManager:
   - Chomper
   - DamageScreen
   - PickUp
+  - ForCam
   layers:
   - Default
   - TransparentFX

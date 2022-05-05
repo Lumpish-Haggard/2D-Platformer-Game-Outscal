@@ -25,7 +25,7 @@ public class CameraFollow : MonoBehaviour
 
     void Awake() 
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("ForCam");
     }
     // Start is called before the first frame update
     void Start()
@@ -38,7 +38,7 @@ public class CameraFollow : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("ForCam");
         }
         else
         {

@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D EllenRigidBody;
     private Animator AnimationControl;
 
+    public Transform ceilingPoint;
+    private bool ceiling;
+
+    private float crouch;
+    public bool crouching;
+
     private void Start() 
     {
         EllenRigidBody = GetComponent<Rigidbody2D>();
@@ -29,15 +35,20 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         jump = Input.GetAxisRaw("Jump");
+        crouch = Input.GetAxisRaw("Crouch");
+
+        CrouchFunction();
     }
 
     private void FixedUpdate() 
     {
         Flip();
         grounded = Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround);
+        ceiling = Physics2D.OverlapCircle(ceilingPoint.position, groundRadius, whatIsGround);
         Move();
         Jump();
 
+        AnimationControl.SetBool("Crouch", crouching);
         AnimationControl.SetFloat("Speed", Mathf.Abs(EllenRigidBody.velocity.x));
         AnimationControl.SetBool("Grounded", grounded);
         AnimationControl.SetFloat("Jumping", EllenRigidBody.velocity.y);
@@ -62,6 +73,18 @@ public class PlayerController : MonoBehaviour
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
+        }
+    }
+
+    void CrouchFunction()
+    {
+        if ((crouch != 0 || ceiling == true) && (grounded == true))
+        {
+            crouching = true;
+        }
+        else
+        {
+            crouching = false;
         }
     }
 }
