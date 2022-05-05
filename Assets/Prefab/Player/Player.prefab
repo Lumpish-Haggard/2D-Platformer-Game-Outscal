@@ -219,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontal: 0
   speed: 6
-  jump: 0
   jumpForce: 6
   grounded: 0
   facingRight: 1
@@ -230,6 +229,7 @@ MonoBehaviour:
   groundPoint: {fileID: 1495911642}
   ceilingPoint: {fileID: 2049344607}
   crouching: 0
+  extraJumps: 2
 --- !u!95 &2024514262
 Animator:
   serializedVersion: 4
@@ -319,9 +319,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.04, y: 0.3}
+  m_Offset: {x: 0.0018671751, y: 0.3}
   serializedVersion: 2
-  m_Radius: 0.35354152
+  m_Radius: 0.31167442
 --- !u!114 &6214190990848769438
 MonoBehaviour:
   m_ObjectHideFlags: 0
