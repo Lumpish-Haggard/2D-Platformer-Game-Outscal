@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float jump;
     public float jumpForce;
 
+
     public bool grounded;
     public bool facingRight = true;
 
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D EllenRigidBody;
     private Animator AnimationControl;
+
 
     public Transform ceilingPoint;
     private bool ceiling;
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() 
     {
+
         Flip();
         grounded = Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround);
         ceiling = Physics2D.OverlapCircle(ceilingPoint.position, groundRadius, whatIsGround);
@@ -54,12 +57,14 @@ public class PlayerController : MonoBehaviour
         AnimationControl.SetFloat("Jumping", EllenRigidBody.velocity.y);
     }
 
+
     private void Move()
     {
         EllenRigidBody.velocity = new Vector2(horizontal * speed, EllenRigidBody.velocity.y);
     }
 
     private void Jump()
+
     {
         if(grounded)
         EllenRigidBody.velocity = new Vector2(EllenRigidBody.velocity.x, jump * jumpForce);
@@ -76,7 +81,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     void CrouchFunction()
+
     {
         if ((crouch != 0 || ceiling == true) && (grounded == true))
         {
@@ -86,5 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             crouching = false;
         }
+
     }
+
 }
