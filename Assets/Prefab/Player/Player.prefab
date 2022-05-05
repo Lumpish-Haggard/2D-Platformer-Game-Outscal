@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 2024514269}
   - component: {fileID: 2024514270}
   - component: {fileID: 6214190990848769438}
+  - component: {fileID: 732405034}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -288,11 +289,11 @@ BoxCollider2D:
   m_GameObject: {fileID: 1993922485792505840}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4a23d064f72bcd440bf6c43217a3a198, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04, y: 0.82}
+  m_Offset: {x: 0.04, y: 1.04}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.42, y: 0.1}
@@ -314,7 +315,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1993922485792505840}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4a23d064f72bcd440bf6c43217a3a198, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -336,3 +337,30 @@ MonoBehaviour:
   stand: {fileID: 7872167803545271978}
   crouch: {fileID: 2024514269}
   circle: {fileID: 2024514270}
+  jump: {fileID: 732405034}
+--- !u!61 &732405034
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993922485792505840}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 4a23d064f72bcd440bf6c43217a3a198, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.04, y: 1.64}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.42, y: 0.1}
+    oldSize: {x: 3.7534883, y: 2.8325582}
+    newSize: {x: 3.7534883, y: 2.8325582}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.49, y: 1.45}
+  m_EdgeRadius: 0
