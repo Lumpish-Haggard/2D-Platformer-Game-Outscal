@@ -8,6 +8,7 @@ TagManager:
   - DamageScreen
   - PickUp
   - ForCam
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
