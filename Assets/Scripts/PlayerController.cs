@@ -4,66 +4,95 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator animator;
+    public float horizontal;
     public float speed;
     public float jump;
-    private Rigidbody2D ellenkibody; //for fall after the jump
+    public float jumpForce;
 
-    public float crouch;
 
-    private void Awake() //Starting the script
+    public bool grounded;
+    public bool facingRight = true;
+
+    public LayerMask whatIsGround;
+    public float groundRadius;
+    public Transform groundPoint;
+
+    private Rigidbody2D EllenRigidBody;
+    private Animator AnimationControl;
+
+
+    public Transform ceilingPoint;
+    private bool ceiling;
+
+    private float crouch;
+    public bool crouching;
+
+    private void Start() 
     {
-        Debug.Log("Player Contoller Awake");
-        ellenkibody = gameObject.GetComponent<Rigidbody2D>();
+        EllenRigidBody = GetComponent<Rigidbody2D>();
+        AnimationControl = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Update() 
     {
-        Debug.Log("Collision: " + collision.gameObject.name); //Printing the collider
+        horizontal = Input.GetAxisRaw("Horizontal");
+        jump = Input.GetAxisRaw("Jump");
+        crouch = Input.GetAxisRaw("Crouch");
+
+        CrouchFunction();
     }
 
-    private void Update() //input logic to make player move
+    private void FixedUpdate() 
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Jump");
-        float crouch = Input.GetAxisRaw("Crouch");
 
-        MoveCharacter(horizontal, vertical, crouch);
-        PlayMovementAnimation(horizontal, vertical, crouch);
+        Flip();
+        grounded = Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround);
+        ceiling = Physics2D.OverlapCircle(ceilingPoint.position, groundRadius, whatIsGround);
+        Move();
+        Jump();
 
+        AnimationControl.SetBool("Crouch", crouching);
+        AnimationControl.SetFloat("Speed", Mathf.Abs(EllenRigidBody.velocity.x));
+        AnimationControl.SetBool("Grounded", grounded);
+        AnimationControl.SetFloat("Jumping", EllenRigidBody.velocity.y);
     }
 
-    private void MoveCharacter(float horizontal, float vertical, float crouch) //character moving function
-    {
-        //horizontal movements
-        Vector3 position = transform.position;
-        position.x += horizontal * speed * Time.deltaTime; // [1 / frames per second]
-        transform.position = position;
 
-        //vertical movements
-        if(vertical > 0)
+    private void Move()
+    {
+        EllenRigidBody.velocity = new Vector2(horizontal * speed, EllenRigidBody.velocity.y);
+    }
+
+    private void Jump()
+
+    {
+        if(grounded)
+        EllenRigidBody.velocity = new Vector2(EllenRigidBody.velocity.x, jump * jumpForce);
+    }
+
+    private void Flip()
+    {
+        if((horizontal<0 && facingRight == true) || (horizontal>0 && facingRight == false))
         {
-            ellenkibody.AddForce(new Vector2(0f, jump), ForceMode2D.Force);
+            facingRight = !facingRight;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
         }
     }
 
-    private void PlayMovementAnimation(float horizontal, float vertical, float crouch)
+
+    void CrouchFunction()
+
     {
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
-
-        Vector3 scale = transform.localScale;
-        if (horizontal < 0) //rotating it for the left animation (flip)
+        if ((crouch != 0 || ceiling == true) && (grounded == true))
         {
-            scale.x = -1f * Mathf.Abs(scale.x);
+            crouching = true;
         }
-        else if (horizontal > 0)
+        else
         {
-            scale.x = Mathf.Abs(scale.x);
+            crouching = false;
         }
-        transform.localScale = scale;
-
-        animator.SetBool("Jump", vertical > 0);
-        animator.SetBool("Crouch", crouch > 0);
 
     }
 
