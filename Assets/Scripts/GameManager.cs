@@ -7,11 +7,12 @@ public class GameManager : MonoBehaviour
     public static GameManager ApnaGameManager;
 
     public GameObject prefab;
-    private GameObject respawnPoint;
+    public GameObject respawnPoint;
 
     public float respawnTimeDelay = 2f;
 
     public int lives;
+
     
 
 
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        respawnPoint = GameObject.FindGameObjectWithTag("Respawn");
+        
     }
 
     public IEnumerator Respawn()
