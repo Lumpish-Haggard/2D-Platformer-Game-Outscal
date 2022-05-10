@@ -1090,6 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1993922485792505840, guid: f81629c4b69b40343ae899240bc2f32e, type: 3}
+  respawnTimeDelay: 2
   lives: 3
 --- !u!4 &1055978552
 Transform:

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChomperControl : MonoBehaviour
+public class EnemyControl : MonoBehaviour
 {
 
     public Transform originPoint;

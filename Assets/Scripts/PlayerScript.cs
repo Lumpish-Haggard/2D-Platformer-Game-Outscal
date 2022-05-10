@@ -95,7 +95,7 @@ public class PlayerScript : MonoBehaviour
         if (playerStats.Health <=0)
         {
             Destroy(gameObject);
-            GameManager.GM.StartCoroutine(GameManager.GM.Respawn());
+            GameManager.ApnaGameManager.StartCoroutine(GameManager.ApnaGameManager.Respawn());
         }
     }
 }
