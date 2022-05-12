@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager GM;
+    public static GameManager ApnaGameManager;
 
     public GameObject prefab;
-    private GameObject respawnPoint;
+    public GameObject respawnPoint;
+
+    public float respawnTimeDelay = 2f;
 
     public int lives;
+
+    
 
 
     //making the Game Manager a Singleton 
     void Awake() 
     {
-        if (GM == null)
+        if (ApnaGameManager == null)
         {
-            GM = this;
+            ApnaGameManager = this;
             DontDestroyOnLoad(gameObject);           
         }    
         else
@@ -25,7 +29,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        respawnPoint = GameObject.FindGameObjectWithTag("Respawn");
+        
     }
 
     public IEnumerator Respawn()
@@ -35,7 +39,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("For Sending to End Screen");
         }
-        yield return new WaitForSeconds(2f); //respawn after 2 seconds
+        yield return new WaitForSeconds(respawnTimeDelay); //respawn after 2 seconds
         if (lives > 0)
         Instantiate(prefab, respawnPoint.transform.position, respawnPoint.transform.rotation);
     }

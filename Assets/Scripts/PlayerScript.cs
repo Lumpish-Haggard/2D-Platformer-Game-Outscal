@@ -18,13 +18,25 @@ public class PlayerScript : MonoBehaviour
 
     public int normalDamage;
 
-    private void OnCollisionEnter2D(Collision2D other) 
+    void OnCollisionEnter2D(Collision2D other) 
     {
         if (other.gameObject.CompareTag("Chomper"))
         {
             DamagePlayer(normalDamage);
             Destroy(other.gameObject);
         }
+
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            if (transform.position.y > other.transform.position.y+1)
+            transform.SetParent(other.transform);
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other) 
+    {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        transform.SetParent(null);   
     }
 
     void OnTriggerEnter2D(Collider2D other) 
@@ -83,7 +95,7 @@ public class PlayerScript : MonoBehaviour
         if (playerStats.Health <=0)
         {
             Destroy(gameObject);
-            GameManager.GM.StartCoroutine(GameManager.GM.Respawn());
+            GameManager.ApnaGameManager.StartCoroutine(GameManager.ApnaGameManager.Respawn());
         }
     }
 }

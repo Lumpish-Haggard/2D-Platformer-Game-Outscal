@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float horizontal;
     public float speed;
-    public float jump;
+    
     public float jumpForce;
 
 
@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
     private float crouch;
     public bool crouching;
 
+    public int extraJumps = 2; //for triple jump
+    int jumpCount = 0;
+    float jumpCoolDown;
+
+
     private void Start() 
     {
         EllenRigidBody = GetComponent<Rigidbody2D>();
@@ -36,9 +41,14 @@ public class PlayerController : MonoBehaviour
     private void Update() 
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        jump = Input.GetAxisRaw("Jump");
-        crouch = Input.GetAxisRaw("Crouch");
+        
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+        CheckGrounded();
 
+        crouch = Input.GetAxisRaw("Crouch");
         CrouchFunction();
     }
 
@@ -49,7 +59,7 @@ public class PlayerController : MonoBehaviour
         grounded = Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround);
         ceiling = Physics2D.OverlapCircle(ceilingPoint.position, groundRadius, whatIsGround);
         Move();
-        Jump();
+        
 
         AnimationControl.SetBool("Crouch", crouching);
         AnimationControl.SetFloat("Speed", Mathf.Abs(EllenRigidBody.velocity.x));
@@ -64,10 +74,30 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Jump()
-
     {
-        if(grounded)
-        EllenRigidBody.velocity = new Vector2(EllenRigidBody.velocity.x, jump * jumpForce);
+        if (grounded || jumpCount < extraJumps)
+        {
+        EllenRigidBody.velocity = new Vector2(EllenRigidBody.velocity.x, jumpForce);
+        jumpCount++;
+        }
+    }
+
+    void CheckGrounded()
+    {
+        if (Physics2D.OverlapCircle(groundPoint.position, groundRadius, whatIsGround))
+        {
+            grounded = true;
+            jumpCount = 0;
+            jumpCoolDown = Time.time + 0.2f;
+        }
+        else if (Time.time < jumpCoolDown)
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
     }
 
     private void Flip()
