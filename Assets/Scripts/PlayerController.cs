@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     {
         EllenRigidBody = GetComponent<Rigidbody2D>();
         AnimationControl = GetComponent<Animator>();
+        
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update() 
@@ -124,6 +127,16 @@ public class PlayerController : MonoBehaviour
             crouching = false;
         }
 
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        FindStartPos();
+    }
+
+    void FindStartPos()
+    {
+        transform.position = GameObject.FindWithTag("Respawn").transform.position;
     }
 
 }

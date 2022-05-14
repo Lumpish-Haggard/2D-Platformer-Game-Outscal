@@ -1,16 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelOver : MonoBehaviour
 {
+
+	public int iLevelToLoad;
+	public string sLevelToLoad;
+
+	public bool useIntegerToLoadLevel = false;
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.gameObject.GetComponent<PlayerController>() != null)
+		GameObject collisionGameObject = collision.gameObject;
+
+		if(collisionGameObject.name == "Player")
 		{
-				//level over
-				Debug.Log("Congratualtions on achieving literally nothing!");
-			
+			LoadScene();		
+		}
+	}
+
+	void LoadScene()
+	{
+		if (useIntegerToLoadLevel)
+		{
+			SceneManager.LoadScene(iLevelToLoad);
+		}
+		else 
+		{
+			SceneManager.LoadScene(sLevelToLoad);
 		}
 	}
 }
